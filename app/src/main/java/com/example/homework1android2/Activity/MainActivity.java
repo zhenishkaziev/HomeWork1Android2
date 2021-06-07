@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        getFotoFromGallery();
+
 //        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
 //        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         setContentView(binding.getRoot());
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
+        getFotoFromGallery();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
