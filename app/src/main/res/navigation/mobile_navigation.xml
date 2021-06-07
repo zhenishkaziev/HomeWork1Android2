@@ -28,7 +28,7 @@
         tools:layout="@layout/fragment_slideshow" />
     <fragment
         android:id="@+id/formFragment"
-        android:name="com.example.homework1android2.FormFragment"
+        android:name="com.example.homework1android2.FormFrag.FormFragment"
         android:label="fragment_form"
         tools:layout="@layout/fragment_form" />
 </navigation>
