@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.homework1android2.R;
 import com.example.homework1android2.Adapter.ViewPagerAdapter;
+import com.example.homework1android2.R;
 import com.example.homework1android2.model.PagerModel;
 import com.google.android.material.tabs.TabLayout;
 
@@ -20,31 +20,25 @@ import java.util.List;
 
 public class SecondActivity extends AppCompatActivity {
 
-     ViewPager pager;
-     ViewPagerAdapter adapter;
-     LottieAnimationView lottieAnimationView, animationView, getAnimationView;
-     Button bntBegin;
-     TextView txtAlighn;
-     TabLayout tabLayout;
+    ViewPager pager;
+    ViewPagerAdapter adapter;
+    LottieAnimationView lottieAnimationView,animationView, getAnimationView;
+    Button bntBegin;
+    TextView txtSkip;
+    TabLayout indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        pager = findViewById(R.id.view_pager);
-        lottieAnimationView = findViewById(R.id.animation_view);
-        animationView = findViewById(R.id.second_view);
-        getAnimationView = findViewById(R.id.third_view);
-        txtAlighn = findViewById(R.id.alighn_all);
-        bntBegin = findViewById(R.id.button_ready);
+        searchView();
+        addList();
+        initButtons();
+        scrollNext();
 
-        List <PagerModel> list = new ArrayList<>();
-        list.add(new PagerModel("Очень удобный функционал"));
-        list.add(new PagerModel("Быстрый качественный продукт"));
-        list.add(new PagerModel("Куча функций и интересных фишек"));
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(), list);
-        pager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(pager, true);
+
+
+
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -68,29 +62,17 @@ public class SecondActivity extends AppCompatActivity {
                    } else{
                        getAnimationView.setVisibility(View.GONE);
                    }
-                    if (position == 3){
+                    if (position == 2){
                         bntBegin.setVisibility(View.VISIBLE);
                     } else {
                         bntBegin.setVisibility(View.GONE);
                     }
 
-                     if (position == 3){
-                         txtAlighn.setVisibility(View.GONE);
+                     if (position == 2){
+                         txtSkip.setVisibility(View.GONE);
                      } else{
-                         txtAlighn.setVisibility(View.VISIBLE);
+                         txtSkip.setVisibility(View.VISIBLE);
                      }
-                    if (position == 3){
-                        bntBegin.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                  Intent intent = new Intent(SecondActivity.this, MainActivity.class);
-                                  startActivity(intent);
-                            }
-                        });
-                    }
-
-
-
             }
 
 
@@ -101,6 +83,53 @@ public class SecondActivity extends AppCompatActivity {
         });
 
 
+
+    }
+
+    private void scrollNext() {
+        txtSkip.setOnClickListener(v -> {
+            pager.setCurrentItem(pager.getCurrentItem() + 1);
+        });
+    }
+
+    private void addList() {
+        List<PagerModel> list = new ArrayList<>();
+        list.add(new PagerModel("Очень удобный функционал"));
+        list.add(new PagerModel("Быстрый качественный продукт"));
+        list.add(new PagerModel("Куча функций и интересных фишек"));
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), list);
+        pager.setAdapter(adapter);
+        indicator.setupWithViewPager(pager);
+    }
+
+    private void searchView() {
+        pager = findViewById(R.id.view_pager);
+        lottieAnimationView = findViewById(R.id.animation_view);
+        animationView = findViewById(R.id.second_view);
+        getAnimationView = findViewById(R.id.third_view);
+        txtSkip = findViewById(R.id.all_skip);
+        indicator = findViewById(R.id.tab_indiactor);
+        bntBegin = findViewById(R.id.button_ready);
+    }
+
+    private void initButtons() {
+
+//        txtSkip.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(SecondActivity.this, "sdsfsdfs", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+//                startActivity(intent);
+//
+//            }
+//        });
+            bntBegin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
 
     }
 }

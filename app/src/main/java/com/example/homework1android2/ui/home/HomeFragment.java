@@ -1,6 +1,5 @@
 package com.example.homework1android2.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,14 +19,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.homework1android2.Activity.SecondActivity;
 import com.example.homework1android2.Adapter.TaskAdaptrer;
 import com.example.homework1android2.Interface.OnItemClick;
 import com.example.homework1android2.R;
 import com.example.homework1android2.databinding.FragmentHomeBinding;
 import com.example.homework1android2.model.TaskmOdel;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,17 +160,7 @@ public class HomeFragment extends Fragment implements OnItemClick {
 
     }
 
-    @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        binding.secondActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), SecondActivity.class);
-                startActivity(intent);
+
             }
-        });
-    }
-}
 
 

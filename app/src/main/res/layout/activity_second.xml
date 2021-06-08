@@ -8,10 +8,12 @@
     tools:context=".Activity.SecondActivity">
 
     <TextView
-        android:id="@+id/alighn_all"
+        android:id="@+id/all_skip"
         android:textColor="#E3A73B"
         android:text="Пропустить"
         android:layout_marginRight="45dp"
+        android:layout_marginTop="32dp"
+        android:visibility="visible"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -31,7 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
         android:layout_width="350dp"
@@ -40,9 +41,7 @@
         app:lottie_autoPlay="true"
         android:scaleX="2"
         android:scaleY="2"
-        android:layout_marginTop="55dp"
         android:visibility="visible"
-        android:layout_marginLeft="25dp"
         app:lottie_fileName="image.json"
         app:lottie_loop="true" />
 
@@ -81,10 +80,18 @@
         android:text="Начать работу"
         android:background="@color/black"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/animation_view"
+        android:layout_marginBottom="45dp"
         android:visibility="gone"
+        android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="100dp"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_indiactor"
+        app:tabBackground="@drawable/tab_layout"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
 
