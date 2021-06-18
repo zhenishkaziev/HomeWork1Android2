@@ -1,9 +1,15 @@
 package com.example.homework1android2.Activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,23 +26,23 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     ImageView imPicture;
-    View view;
+    final  int RECUST = 1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-
-//        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-//        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         setContentView(binding.getRoot());
-          setSupportActionBar(binding.appBarMain.toolbar);
+        setSupportActionBar(binding.appBarMain.toolbar);
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -59,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        addImage();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
@@ -67,9 +74,34 @@ public class MainActivity extends AppCompatActivity {
                 navController.navigate(R.id.action_nav_home_to_formFragment);
             }
         });
-
     }
 
+    private void addImage() {
+        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri uri) {
+                        // Handle the returned Uri
+                        try {
+                            final InputStream imageStream = getContentResolver().openInputStream(uri);
+                            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                            imPicture.setImageBitmap(selectedImage);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+        NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigation.getHeaderView(0);
+        imPicture = (ImageView) header.findViewById(R.id.image_neader);
+        imPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGetContent.launch("image/*");
+            }
+        });
+    }
 
     @Override
     public boolean onSupportNavigateUp() {

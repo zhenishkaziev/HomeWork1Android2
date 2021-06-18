@@ -1,7 +1,9 @@
 package com.example.homework1android2.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,13 +33,12 @@ public class SecondActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        searchView();
+        initView();
         addList();
         initButtons();
+        // показывать ViewPager только один раз!
+        checkShowingOnBoard();
         scrollNext();
-
-
-
 
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -59,32 +60,31 @@ public class SecondActivity extends AppCompatActivity {
                   }
                    if (position == 2){
                        getAnimationView.setVisibility(View.VISIBLE);
+                       bntBegin.setVisibility(View.VISIBLE);
+                       txtSkip.setVisibility(View.GONE);
                    } else{
                        getAnimationView.setVisibility(View.GONE);
+                       bntBegin.setVisibility(View.GONE);
+                       txtSkip.setVisibility(View.VISIBLE);
                    }
-                    if (position == 2){
-                        bntBegin.setVisibility(View.VISIBLE);
-                    } else {
-                        bntBegin.setVisibility(View.GONE);
-                    }
-
-                     if (position == 2){
-                         txtSkip.setVisibility(View.GONE);
-                     } else{
-                         txtSkip.setVisibility(View.VISIBLE);
-                     }
             }
-
-
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
         });
-
-
-
     }
+
+    private void checkShowingOnBoard() {
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SecondActivity.this);
+        Boolean showOnBoard = pref.getBoolean("showBoard", false);
+         if (showOnBoard){
+             Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+             startActivity(intent);
+         }
+         finish();
+      }
 
     private void scrollNext() {
         txtSkip.setOnClickListener(v -> {
@@ -102,7 +102,7 @@ public class SecondActivity extends AppCompatActivity {
         indicator.setupWithViewPager(pager);
     }
 
-    private void searchView() {
+    private void initView() {
         pager = findViewById(R.id.view_pager);
         lottieAnimationView = findViewById(R.id.animation_view);
         animationView = findViewById(R.id.second_view);
@@ -113,7 +113,6 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private void initButtons() {
-
 //        txtSkip.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -128,6 +127,8 @@ public class SecondActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(SecondActivity.this, MainActivity.class);
                     startActivity(intent);
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SecondActivity.this);
+                    Boolean showOnBoard = pref.edit().putBoolean("showBoard", true).commit();
                 }
             });
 

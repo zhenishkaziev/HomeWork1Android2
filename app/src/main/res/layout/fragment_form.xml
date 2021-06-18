@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_backgrpund"
@@ -17,7 +16,26 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/edit_et"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="55dp"
+        android:gravity="start"
+        android:hint="Edit description"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        android:paddingTop="13dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_con"
+        android:layout_marginBottom="120dp"
+
+        />
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tool_con"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,7 +47,7 @@
             android:paddingLeft="55dp"
             android:text="Готово"
             android:textColor="@color/teal_700"
-            android:textSize="25sp"
+            android:textSize="15dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,60 +72,80 @@
             app:layout_constraintLeft_toRightOf="@+id/date_text"
             app:layout_constraintTop_toTopOf="parent" />
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/edit_et"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:hint="Edit description"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_form" />
-
-
-    <Button
-        android:id="@+id/bnt_black"
-        android:layout_width="80dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/item_draw"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginRight="12dp"
-         app:layout_constraintRight_toLeftOf="@+id/bnt_white" />
-
-<!--    <Switch-->
-<!--        android:id="@+id/switch_black"-->
-<!--        android:layout_marginLeft="90dp"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        android:layout_marginBottom="12dp"-->
-<!--        android:checked="true"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/bnt_black"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"/>-->
-
-    <Button
-        android:id="@+id/bnt_white"
-        android:layout_width="80dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/draw_white"
+    <RadioGroup
+        android:id="@+id/radios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent">
 
-    <Button
-        android:id="@+id/bnt_red"
-        android:layout_width="80dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="12dp"
-        android:background="@drawable/draw_red"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintLeft_toRightOf="@+id/bnt_white" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buton_contrait"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/bnt_black"
+                android:layout_width="80dp"
+                android:layout_height="45dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/item_draw"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/bnt_white" />
+
+            <Button
+                android:id="@+id/bnt_white"
+                android:layout_width="80dp"
+                android:layout_height="45dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/draw_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <Button
+                android:id="@+id/bnt_red"
+                android:layout_width="80dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/draw_red"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/bnt_white" />
+
+            <RadioButton
+                android:id="@+id/radio_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bnt_black" />
+
+            <RadioButton
+                android:id="@+id/radio_white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bnt_white" />
+
+            <RadioButton
+                android:id="@+id/radio_red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bnt_red" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RadioGroup>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,19 +3,24 @@ package com.example.homework1android2.FormFrag;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.example.homework1android2.App;
 import com.example.homework1android2.R;
 import com.example.homework1android2.model.TaskmOdel;
 
@@ -31,11 +36,11 @@ public class FormFragment extends Fragment {
     TaskmOdel model = new TaskmOdel();
     boolean isColor = true;
     Button bntBlack, bntWhite, bntRed;
-    View screenView;
-//    Switch aSwitch;
     boolean isEdit = false;
     int pos;
     String background;
+    RadioGroup radioGroup;
+    RadioButton radioBlack, radioWhite, radioRed;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,24 +51,27 @@ public class FormFragment extends Fragment {
         getData();
         getInform();
         initButton();
+        checkRadio();
         return view;
     }
 
+    //  мы принимаем даннные с HomerF и иниц наши данные и принимает данные по позиции и меняем isEdit на true
     private void getInform() {
-         if (getArguments() != null){
-             model = (TaskmOdel) getArguments().getSerializable("mod");
-             txtMain.setText(model.getTitle());
-             pos = getArguments().getInt("position");
-             isEdit = true;
-         }
+        if (getArguments() != null) {
+            model = (TaskmOdel) getArguments().getSerializable("mod");
+            txtMain.setText(model.getTitle());
+            pos = getArguments().getInt("position");
+            isEdit = true;
+        }
     }
 
     private void getData() {
+        // добавялет дату в live режиме
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("d MMMM");
         SimpleDateFormat time = new SimpleDateFormat(" HH:mm");
         String strDate = sdf.format(c.getTime());
-        String strTime = time.format(c.getTime()); 
+        String strTime = time.format(c.getTime());
         txtDate.setText(strDate);
         dateTime.setText(strTime);
 ////        Date currentDate = new Date();
@@ -79,16 +87,22 @@ public class FormFragment extends Fragment {
         bntBlack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                aSwitch.setChecked(true);
+                radioGroup.check(R.id.radio_black);
                 background = "black";
+                YoYo.with(Techniques.RubberBand).duration(500).repeat(2).playOn(v.findViewById(R.id.bnt_black));
+
             }
         });
-          bntWhite.setOnClickListener(v -> {
-              background = "white";
-          });
-          bntRed.setOnClickListener(v -> {
-              background = "red";
-          });
+        bntWhite.setOnClickListener(v -> {
+            radioGroup.check(R.id.radio_white);
+            background = "white";
+            YoYo.with(Techniques.RubberBand).duration(500).repeat(2).playOn(v.findViewById(R.id.bnt_white));
+        });
+        bntRed.setOnClickListener(v -> {
+            radioGroup.check(R.id.radio_red);
+            background = "red";
+            YoYo.with(Techniques.RubberBand).duration(500).repeat(2).playOn(v.findViewById(R.id.bnt_red));
+        });
 
 //        bntBlack.setOnClickListener(v -> {
 //             if (isColor){
@@ -109,11 +123,24 @@ public class FormFragment extends Fragment {
 //
     }
 
+    private void checkRadio() {
+        radioBlack.setOnClickListener(v -> {
+            radioGroup.check(R.id.radio_black);
+        });
+        radioWhite.setOnClickListener(v -> {
+            radioGroup.check(R.id.radio_white);
+        });
+        radioRed.setOnClickListener(v -> {
+            radioGroup.check(R.id.radio_red);
+        });
+    }
+
     public void initClick() {
         txtReady.setOnClickListener(v -> {
-            if (isEdit){
+            if (isEdit) {
+                // это редактирование
                 String title = txtMain.getText().toString();
-                model = new TaskmOdel(title, model.getBackground());
+                model = new TaskmOdel(title, background);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("keyModel", model);
                 bundle.putInt("position", pos);
@@ -121,6 +148,7 @@ public class FormFragment extends Fragment {
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigateUp();
             } else {
+                // это добавление в HomeF
                 String title = txtMain.getText().toString();
                 model = new TaskmOdel(title, background);
                 Bundle bundle = new Bundle();
@@ -130,8 +158,11 @@ public class FormFragment extends Fragment {
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigateUp();
             }
+            App.getInstance(requireContext()).getTaskDao().insert(model);
+            Log.e("tag", "miss");
         });
     }
+
     private void initView(View view) {
         txtMain = view.findViewById(R.id.edit_et);
         txtReady = view.findViewById(R.id.ready_text);
@@ -140,11 +171,17 @@ public class FormFragment extends Fragment {
         bntBlack = view.findViewById(R.id.bnt_black);
         bntWhite = view.findViewById(R.id.bnt_white);
         bntRed = view.findViewById(R.id.bnt_red);
+        radioGroup = view.findViewById(R.id.radios);
+        radioBlack = view.findViewById(R.id.radio_black);
+        radioWhite = view.findViewById(R.id.radio_white);
+        radioRed = view.findViewById(R.id.radio_red);
 //        aSwitch = view.findViewById(R.id.switch_black);
     }
 
+
+      //блокирует клавиратуру при входе
     @Override
-    public void onAttach(@NonNull @NotNull Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         showKeyBoard(true);
     }

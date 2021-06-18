@@ -1,7 +1,9 @@
 package com.example.homework1android2.Adapter;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -11,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.homework1android2.Interface.OnItemClick;
 import com.example.homework1android2.R;
-import com.example.homework1android2.SharedPreference;
 import com.example.homework1android2.model.TaskmOdel;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,36 +24,58 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
 
   public OnItemClick onItemClick;
      public List<TaskmOdel> list = new ArrayList<>();
-    SharedPreference sp;
+    public List<TaskmOdel> listModel = new ArrayList<>();
+    Context context;
 
 
-//    public TaskAdaptrer(List<TaskmOdel> list) {
+    public void setOnItemClick(OnItemClick onItemClick) {
+        this.onItemClick = onItemClick;
+    }
+
+    //    public TaskAdaptrer(List<TaskmOdel> list) {
 //        this.list = list;
 //    }
-
     public  void addModel (TaskmOdel model, OnItemClick onItemClick){
         this.onItemClick = onItemClick;
         list.add(model);
+        list = listModel;
         notifyDataSetChanged();
     }
 
+    public void delete (int position){
+        list.remove(position);
+        notifyDataSetChanged();
+    }
+
+    // это код добавляет редактированный код (по позиции)
     public void editModel(TaskmOdel taskmOdel, int position){
         list.get(position).setTitle(taskmOdel.getTitle());
+        list.get(position).setBackground(taskmOdel.getBackground());
         notifyItemChanged(position);
     }
+     // Room
+     public void addListOfModel (List <TaskmOdel> models){
+        this.list.clear();
+         list = models;
+        notifyDataSetChanged();
+     }
+     public void deleteList(int position){
+        list.remove(position);
+        notifyDataSetChanged();
+     }
 
     @NonNull
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task
-                , parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         holder.onBind(list.get(position));
+
     }
 
     @Override
@@ -64,7 +87,6 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
 
         TextView title;
 
-
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.item_ttext);
@@ -75,7 +97,14 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
         public void onBind(TaskmOdel model) {
             title.setText(model.getTitle());
             itemView.setOnClickListener(v -> {
-                onItemClick.onItemClick(getAdapterPosition(), model);
+                onItemClick.onItemClickk(getAdapterPosition(), model);
+            });
+            itemView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    onItemClick.deleteClick(model);
+                    return false;
+                }
             });
             if (model.getBackground() != null) {
                 switch (model.getBackground()){
@@ -101,4 +130,9 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
         list = filteredList;
         notifyDataSetChanged();
     }
+
+     public void emptySearch(){
+        list  =listModel;
+        notifyDataSetChanged();
+     }
     }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="150dp"
     android:orientation="vertical"
     android:padding="18dp"
+    android:layout_margin="6dp"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="16dp"
     app:cardBackgroundColor="@color/black"
@@ -20,8 +21,10 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="@dimen/item"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:text="@string/title"
-            android:textColor="@color/white"
+            android:textColor="#B1B1B1"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

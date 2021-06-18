@@ -1,9 +1,24 @@
 package com.example.homework1android2.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
+  @Entity
 
 public class TaskmOdel implements Serializable {
-         String title, background;
+      @PrimaryKey(autoGenerate = true)
+          int id;
+
+      public int getId() {
+          return id;
+      }
+
+      public void setId(int id) {
+          this.id = id;
+      }
+
+      String title, background;
 
     public String getTitle() {
         return title;
