@@ -23,6 +23,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.homework1android2.R;
 import com.example.homework1android2.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     ImageView imPicture;
+    private NavController navController;
     final  int RECUST = 1;
 
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
+
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -63,8 +66,19 @@ public class MainActivity extends AppCompatActivity {
                     binding.appBarMain.toolbar.setVisibility(View.VISIBLE);
                     binding.appBarMain.fab.show();
                 }
+                if (destination.getId() == R.id.authFragment){
+                    binding.appBarMain.toolbar.setVisibility(View.GONE);
+                    binding.appBarMain.fab.setVisibility(View.GONE);
+                }
+
+
             }
+
         });
+        if (FirebaseAuth.getInstance().getCurrentUser() == null){
+           // navController.navigate(R.id.authFragment);
+        }
+
         addImage();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);

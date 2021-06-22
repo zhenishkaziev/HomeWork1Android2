@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homework1android2.App;
 import com.example.homework1android2.Interface.OnItemClick;
 import com.example.homework1android2.R;
 import com.example.homework1android2.model.TaskmOdel;
@@ -23,18 +24,16 @@ import java.util.List;
 public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> {
 
   public OnItemClick onItemClick;
-     public List<TaskmOdel> list = new ArrayList<>();
+  public List<TaskmOdel> list = new ArrayList<>();
     public List<TaskmOdel> listModel = new ArrayList<>();
     Context context;
 
 
-    public void setOnItemClick(OnItemClick onItemClick) {
+    public void setOnItemClick
+            (OnItemClick onItemClick) {
         this.onItemClick = onItemClick;
     }
 
-    //    public TaskAdaptrer(List<TaskmOdel> list) {
-//        this.list = list;
-//    }
     public  void addModel (TaskmOdel model, OnItemClick onItemClick){
         this.onItemClick = onItemClick;
         list.add(model);
@@ -42,25 +41,18 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void delete (int position){
-        list.remove(position);
-        notifyDataSetChanged();
-    }
-
     // это код добавляет редактированный код (по позиции)
-    public void editModel(TaskmOdel taskmOdel, int position){
-        list.get(position).setTitle(taskmOdel.getTitle());
-        list.get(position).setBackground(taskmOdel.getBackground());
-        notifyItemChanged(position);
+    public void editModel(TaskmOdel taskmOdel){
+
+        /*list. get(position).setTitle(taskmOdel.getTitle());
+        list.get(position).setBackground(taskmOdel.getBackground());*/
+        App.instance.getTaskDao().update(taskmOdel);
+        notifyDataSetChanged();
     }
      // Room
      public void addListOfModel (List <TaskmOdel> models){
         this.list.clear();
          list = models;
-        notifyDataSetChanged();
-     }
-     public void deleteList(int position){
-        list.remove(position);
         notifyDataSetChanged();
      }
 
@@ -83,6 +75,8 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
         return list.size();
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
@@ -102,7 +96,7 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
             itemView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    onItemClick.deleteClick(model);
+                    onItemClick.deleteClick(getAdapterPosition(),model);
                     return false;
                 }
             });
@@ -123,6 +117,13 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
                 }
 
             }
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onItemClick.onLOngClickListener(getAdapterPosition(),model);
+                    return false;
+                }
+            });
         }
 
     }

@@ -16,7 +16,6 @@ public class FragmentPager extends Fragment {
     private String title;
     private TextView txtTitle;
 
-
     public FragmentPager() {
 
     }

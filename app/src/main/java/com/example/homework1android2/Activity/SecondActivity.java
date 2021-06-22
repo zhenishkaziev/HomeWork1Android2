@@ -125,7 +125,7 @@ public class SecondActivity extends AppCompatActivity {
             bntBegin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SecondActivity.this,  MainActivity.class);
                     startActivity(intent);
                     SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SecondActivity.this);
                     Boolean showOnBoard = pref.edit().putBoolean("showBoard", true).commit();

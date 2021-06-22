@@ -36,6 +36,7 @@ public class FormFragment extends Fragment {
     TaskmOdel model = new TaskmOdel();
     boolean isColor = true;
     Button bntBlack, bntWhite, bntRed;
+    TaskmOdel mod;
     boolean isEdit = false;
     int pos;
     String background;
@@ -58,9 +59,8 @@ public class FormFragment extends Fragment {
     //  мы принимаем даннные с HomerF и иниц наши данные и принимает данные по позиции и меняем isEdit на true
     private void getInform() {
         if (getArguments() != null) {
-            model = (TaskmOdel) getArguments().getSerializable("mod");
-            txtMain.setText(model.getTitle());
-            pos = getArguments().getInt("position");
+            mod = (TaskmOdel) getArguments().getSerializable("mod");
+            txtMain.setText(mod.getTitle());
             isEdit = true;
         }
     }
@@ -140,10 +140,10 @@ public class FormFragment extends Fragment {
             if (isEdit) {
                 // это редактирование
                 String title = txtMain.getText().toString();
-                model = new TaskmOdel(title, background);
+                mod.setTitle(title);
+                App.getInstance(requireContext()).getTaskDao().update(mod);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("keyModel", model);
-                bundle.putInt("position", pos);
+                bundle.putSerializable("keyModel", mod);
                 getParentFragmentManager().setFragmentResult("editData", bundle);
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigateUp();
@@ -155,10 +155,12 @@ public class FormFragment extends Fragment {
                 bundle.putSerializable("keyModel", model);
                 bundle.putInt("position", pos);
                 getParentFragmentManager().setFragmentResult("key", bundle);
+                App.getInstance(requireContext()).getTaskDao().insert(model);
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigateUp();
+
             }
-            App.getInstance(requireContext()).getTaskDao().insert(model);
+
             Log.e("tag", "miss");
         });
     }
