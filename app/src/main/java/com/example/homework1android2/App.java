@@ -15,7 +15,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-              SharedPreference.init(this);
+              PreferenceHelper.init(this);
     }
      public static AppDataBase getInstance(Context context) {
          if (instance == null){

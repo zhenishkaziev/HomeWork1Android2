@@ -1,11 +1,13 @@
-package com.example.homework1android2.Activity;
+package com.example.homework1android2.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,8 +22,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.homework1android2.PreferenceHelper;
 import com.example.homework1android2.R;
 import com.example.homework1android2.databinding.ActivityMainBinding;
+import com.example.homework1android2.onBoard.SecondActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -35,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     ImageView imPicture;
+    TextView txtMenu;
     private NavController navController;
-    final  int RECUST = 1;
+    final int RECUST = 1;
 
 
     @Override
@@ -44,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        if (PreferenceHelper.getShowBoard()){
+            startActivity(new Intent(this, SecondActivity.class));
+
+        }
         setSupportActionBar(binding.appBarMain.toolbar);
 
 
@@ -66,19 +75,22 @@ public class MainActivity extends AppCompatActivity {
                     binding.appBarMain.toolbar.setVisibility(View.VISIBLE);
                     binding.appBarMain.fab.show();
                 }
-                if (destination.getId() == R.id.authFragment){
+                if (destination.getId() == R.id.authFragment) {
                     binding.appBarMain.toolbar.setVisibility(View.GONE);
                     binding.appBarMain.fab.setVisibility(View.GONE);
                 }
-
-
+                if (destination.getId() == R.id.fireStore) {
+                    binding.appBarMain.fab.setVisibility(View.GONE);
+                    binding.appBarMain.toolbar.setVisibility(View.GONE);
+                }
             }
 
         });
-        if (FirebaseAuth.getInstance().getCurrentUser() == null){
-           // navController.navigate(R.id.authFragment);
-        }
 
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            navController.navigate(R.id.authFragment);
+//            finish();
+        }
         addImage();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);

@@ -89,14 +89,14 @@ public class AuthFragment extends Fragment {
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener( (OnCompleteListener<AuthResult>) task -> {
+                .addOnCompleteListener((OnCompleteListener<AuthResult>) task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("TAG", "signInWithCredential:success");
 
                         FirebaseUser user = task.getResult().getUser();
                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-                        navController.navigate(R.id.nav_home);
+//                        navController.navigate();
                         // Update UI
                     } else {
                         // Sign in failed, display a message and update the UI
@@ -123,7 +123,7 @@ public class AuthFragment extends Fragment {
 
     private void checkCodeSms() {
         String smsCode = binding.edSecTwo.getText().toString().trim();
-        if (TextUtils.isEmpty(smsCode) || smsCode.length() > 6){
+        if (TextUtils.isEmpty(smsCode) || smsCode.length() > 6) {
             binding.edSecTwo.setError("Input code correct");
             return;
         }
@@ -132,8 +132,8 @@ public class AuthFragment extends Fragment {
     }
 
     private void providePhone() {
-      phone = "+996" + binding.edForPhone.getText().toString().trim();
-        if (TextUtils.isEmpty(phone) && phone.length() > 8){
+        phone = "+996" + binding.edForPhone.getText().toString().trim();
+        if (TextUtils.isEmpty(phone) && phone.length() > 8) {
             binding.edForPhone.setError("Input number correct");
             return;
         }

@@ -3,7 +3,7 @@ package com.example.homework1android2;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SharedPreference {
+public class PreferenceHelper {
 
     public static final String STORAGE_NAME = "StorageName";
 
@@ -34,4 +34,17 @@ public class SharedPreference {
         }
         return settings.getString( name, null );
     }
+     public static void setShowOnBoard (){
+        if (settings == null){
+            init();
+        }
+        editor.putBoolean("onboard", true);
+        editor.apply();
+     }
+     public  static  boolean getShowBoard (){
+        if (settings == null){
+            init();
+        }
+        return settings.getBoolean("onboard", false);
+     }
 }

@@ -1,4 +1,4 @@
-package com.example.homework1android2.Activity;
+package com.example.homework1android2.onBoard;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.homework1android2.Adapter.ViewPagerAdapter;
+import com.example.homework1android2.PreferenceHelper;
+import com.example.homework1android2.activity.MainActivity;
 import com.example.homework1android2.R;
 import com.example.homework1android2.model.PagerModel;
 import com.google.android.material.tabs.TabLayout;
@@ -122,15 +123,11 @@ public class SecondActivity extends AppCompatActivity {
 //
 //            }
 //        });
-            bntBegin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(SecondActivity.this,  MainActivity.class);
-                    startActivity(intent);
-                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SecondActivity.this);
-                    Boolean showOnBoard = pref.edit().putBoolean("showBoard", true).commit();
-                }
-            });
+           bntBegin.setOnClickListener(v -> {
+               PreferenceHelper.setShowOnBoard();
+               startActivity(new Intent(SecondActivity.this, MainActivity.class));
+               finish();
+           });
 
     }
 }

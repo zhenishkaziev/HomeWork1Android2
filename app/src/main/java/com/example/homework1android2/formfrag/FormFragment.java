@@ -1,13 +1,9 @@
-package com.example.homework1android2.FormFrag;
+package com.example.homework1android2.formfrag;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -24,8 +20,6 @@ import com.example.homework1android2.App;
 import com.example.homework1android2.R;
 import com.example.homework1android2.model.TaskmOdel;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -33,13 +27,11 @@ public class FormFragment extends Fragment {
 
     private EditText txtMain;
     private TextView txtReady, txtDate, dateTime;
-    TaskmOdel model = new TaskmOdel();
-    boolean isColor = true;
-    Button bntBlack, bntWhite, bntRed;
+    TaskmOdel model ;
     TaskmOdel mod;
-    boolean isEdit = false;
-    int pos;
+    Button bntBlack, bntWhite, bntRed;
     String background;
+    Button btnByNext;
     RadioGroup radioGroup;
     RadioButton radioBlack, radioWhite, radioRed;
 
@@ -53,7 +45,17 @@ public class FormFragment extends Fragment {
         getInform();
         initButton();
         checkRadio();
+        fireClick();
         return view;
+    }
+
+    private void fireClick() {
+        btnByNext.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.fireStore);
+        });
+
+
     }
 
     //  мы принимаем даннные с HomerF и иниц наши данные и принимает данные по позиции и меняем isEdit на true
@@ -61,7 +63,6 @@ public class FormFragment extends Fragment {
         if (getArguments() != null) {
             mod = (TaskmOdel) getArguments().getSerializable("mod");
             txtMain.setText(mod.getTitle());
-            isEdit = true;
         }
     }
 
@@ -137,32 +138,53 @@ public class FormFragment extends Fragment {
 
     public void initClick() {
         txtReady.setOnClickListener(v -> {
-            if (isEdit) {
-                // это редактирование
-                String title = txtMain.getText().toString();
-                mod.setTitle(title);
-                App.getInstance(requireContext()).getTaskDao().update(mod);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("keyModel", mod);
-                getParentFragmentManager().setFragmentResult("editData", bundle);
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-                navController.navigateUp();
-            } else {
-                // это добавление в HomeF
-                String title = txtMain.getText().toString();
-                model = new TaskmOdel(title, background);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("keyModel", model);
-                bundle.putInt("position", pos);
-                getParentFragmentManager().setFragmentResult("key", bundle);
-                App.getInstance(requireContext()).getTaskDao().insert(model);
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-                navController.navigateUp();
+            String title = txtMain.getText().toString();
+             if (mod == null){
+                 // если mod  у нас null то наша основная моделька должна добавить
+                 model = new TaskmOdel(title, background);
+                 App.getInstance(requireContext()).getTaskDao().insert(model);
+             } else {
+                 // если же нет то он добавит редактированную и обновит
+                 mod.setTitle(title);
+                 mod.setBackground(background);
+                 App.getInstance(requireContext()).getTaskDao().update(mod);
+             }
+             // переход в home fragment
+              close();
 
-            }
 
-            Log.e("tag", "miss");
+
+            // первый код
+//            if (isEdit) {
+//                // это редактирование
+//                String title = txtMain.getText().toString();
+//                mod.setTitle(title);
+//                App.getInstance(requireContext()).getTaskDao().update(mod);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("keyModel", mod);
+//                getParentFragmentManager().setFragmentResult("editData", bundle);
+//                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+//                navController.navigateUp();
+//            } else {
+//                // это добавление в HomeF
+//                String title = txtMain.getText().toString();
+//                model = new TaskmOdel(title, background);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("keyModel", model);
+//                bundle.putInt("position", pos);
+//                getParentFragmentManager().setFragmentResult("key", bundle);
+//                App.getInstance(requireContext()).getTaskDao().insert(model);
+//
+//
+//            }
+//
+//            Log.e("tag", "miss");
         });
+    }
+
+    private void close() {
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+         navController.navigateUp();
     }
 
     private void initView(View view) {
@@ -177,26 +199,27 @@ public class FormFragment extends Fragment {
         radioBlack = view.findViewById(R.id.radio_black);
         radioWhite = view.findViewById(R.id.radio_white);
         radioRed = view.findViewById(R.id.radio_red);
+        btnByNext = view.findViewById(R.id.fire_button);
 //        aSwitch = view.findViewById(R.id.switch_black);
     }
 
 
       //блокирует клавиратуру при входе
-    @Override
-    public void onAttach(@NotNull Context context) {
-        super.onAttach(context);
-        showKeyBoard(true);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        showKeyBoard(false);
-    }
-
-    private void showKeyBoard(boolean showKeyBoard) {
-        final Activity activity = getActivity();
-        final InputMethodManager manager = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        manager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),showKeyBoard ? InputMethodManager.SHOW_FORCED : InputMethodManager.HIDE_NOT_ALWAYS);
-    }
+//    @Override
+//    public void onAttach(@NotNull Context context) {
+//        super.onAttach(context);
+//        showKeyBoard(true);
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        showKeyBoard(false);
+//    }
+//
+//    private void showKeyBoard(boolean showKeyBoard) {
+//        final Activity activity = getActivity();
+//        final InputMethodManager manager = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        manager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),showKeyBoard ? InputMethodManager.SHOW_FORCED : InputMethodManager.HIDE_NOT_ALWAYS);
+//    }
 }

@@ -1,11 +1,10 @@
-package com.example.homework1android2.Adapter;
+package com.example.homework1android2.onBoard;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.homework1android2.FragmentPager;
 import com.example.homework1android2.model.PagerModel;
 
 import org.jetbrains.annotations.NotNull;

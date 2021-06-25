@@ -7,7 +7,7 @@
     android:layout_margin="6dp"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="16dp"
-    app:cardBackgroundColor="@color/black"
+    app:cardBackgroundColor="#191818"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="@dimen/item"
             android:maxLines="2"
+            android:layout_marginTop="15dp"
             android:ellipsize="end"
             android:text="@string/title"
             android:textColor="#B1B1B1"

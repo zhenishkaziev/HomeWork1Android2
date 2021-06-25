@@ -1,6 +1,5 @@
-package com.example.homework1android2.Adapter;
+package com.example.homework1android2.adapter;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,10 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.homework1android2.App;
 import com.example.homework1android2.Interface.OnItemClick;
 import com.example.homework1android2.R;
 import com.example.homework1android2.model.TaskmOdel;
+import com.example.homework1android2.ui.home.HomeFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,8 +24,7 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
 
   public OnItemClick onItemClick;
   public List<TaskmOdel> list = new ArrayList<>();
-    public List<TaskmOdel> listModel = new ArrayList<>();
-    Context context;
+//    public List<TaskmOdel> listModel = new ArrayList<>();
 
 
     public void setOnItemClick
@@ -34,21 +32,20 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
         this.onItemClick = onItemClick;
     }
 
-    public  void addModel (TaskmOdel model, OnItemClick onItemClick){
-        this.onItemClick = onItemClick;
-        list.add(model);
-        list = listModel;
-        notifyDataSetChanged();
-    }
-
-    // это код добавляет редактированный код (по позиции)
-    public void editModel(TaskmOdel taskmOdel){
-
-        /*list. get(position).setTitle(taskmOdel.getTitle());
-        list.get(position).setBackground(taskmOdel.getBackground());*/
-        App.instance.getTaskDao().update(taskmOdel);
-        notifyDataSetChanged();
-    }
+//    public  void addModel (TaskmOdel model, OnItemClick onItemClick){
+//        this.onItemClick = onItemClick;
+//        list.add(model);
+////        list = listModel;
+//        notifyDataSetChanged();
+//    }
+//
+//    // это код добавляет редактированный код (по позиции)
+//    public void editModel(TaskmOdel taskmOdel){
+//        /*list. get(position).setTitle(taskmOdel.getTitle());
+//        list.get(position).setBackground(taskmOdel.getBackground());*/
+//        App.instance.getTaskDao().update(taskmOdel);
+//        notifyDataSetChanged();
+//    }
      // Room
      public void addListOfModel (List <TaskmOdel> models){
         this.list.clear();
@@ -133,7 +130,7 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
     }
 
      public void emptySearch(){
-        list  =listModel;
+        list  = HomeFragment.list;
         notifyDataSetChanged();
      }
     }

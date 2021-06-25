@@ -18,17 +18,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.homework1android2.Adapter.TaskAdaptrer;
 import com.example.homework1android2.App;
 import com.example.homework1android2.Interface.OnItemClick;
 import com.example.homework1android2.R;
+import com.example.homework1android2.adapter.TaskAdaptrer;
 import com.example.homework1android2.databinding.FragmentHomeBinding;
 import com.example.homework1android2.model.TaskmOdel;
 
@@ -41,8 +40,10 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     TaskAdaptrer adaptrer;
+    NavController navController;
     EditText etSearch;
-    List<TaskmOdel> list = new ArrayList<>();
+
+    public static List<TaskmOdel> list = new ArrayList<>();
     public static boolean isChange = true; // для перемены меджду Liner and Grid
 
     @Override
@@ -60,6 +61,13 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         //   Log.e("TAG", "onCreateView: "+ App.getInstance(requireContext()).getTaskDao().getAll());
         //ini();
+//        if (isAdded()) {
+//            navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+//
+//            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+//                navController.navigate(R.id.action_nav_home_to_authFragment);
+//            }
+//        }
         getDataForm();
         pushData();
         getFilter();
@@ -67,22 +75,17 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+
     private void getDataFromDB() {
         App.getInstance(requireContext()).getTaskDao().getAll().observe(requireActivity(), new Observer<List<TaskmOdel>>() {
             @Override
             public void onChanged(List<TaskmOdel> taskmOdels) {
-               adaptrer.addListOfModel(taskmOdels);
-
+                list = taskmOdels;
+                adaptrer.addListOfModel(taskmOdels);
             }
 
         });
     }
-//        App.getInstance(requireContext()).getTaskDao().getAll().observe(getViewLifecycleOwner(), new Observer<List<TaskmOdel>>() {
-//            @Override
-//            public void onChanged(List<TaskmOdel> taskmOdels) {
-//                adaptrer.addListOfModel(list);
-//            }
-//        });
 
     private void getFilter() {
         binding.etSearch.addTextChangedListener(new TextWatcher() {
@@ -93,12 +96,11 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                filter(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                filter(s.toString());
 
             }
         });
@@ -111,8 +113,10 @@ public class HomeFragment extends Fragment {
         for (TaskmOdel model : adaptrer.list) {
             if (model.getTitle().toLowerCase().contains(text.toLowerCase())) {
                 filterList.add(model);
+
             }
         }
+
         // если наш поиск пустой то он дает нам лист который мы создали в адаптере и прировняли к основному листу
         if (binding.etSearch.getText().toString().isEmpty()) {
             adaptrer.emptySearch();
@@ -131,33 +135,34 @@ public class HomeFragment extends Fragment {
         }
         binding.recycleView.setAdapter(adaptrer);
 
-        //binding.recycleView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-
-        // это принимает добавленную заметку
-        getParentFragmentManager().setFragmentResultListener("key", getViewLifecycleOwner(), ((requestKey, result) -> {
-            TaskmOdel taskmOdel = (TaskmOdel) result.getSerializable("keyModel");
-            if (taskmOdel != null) {
-                // adaptrer.addModel(taskmOdel, HomeFragment.this);
-                 App.getInstance(requireContext()).getTaskDao().insert(taskmOdel);
-            }
-        }));
-
-        // это принимает редактированнную заметку
-        getParentFragmentManager().setFragmentResultListener("editData", getViewLifecycleOwner(), ((requestKey, result) -> {
-            TaskmOdel taskmOdel = (TaskmOdel) result.getSerializable("keyModel");
-            if (taskmOdel != null) {
-                adaptrer.editModel(taskmOdel);
-                //  adaptrer.dataModel(taskmOdel);
-
-            }
-        }));
     }
 
+    //binding.recycleView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+
+    // это принимает добавленную заметку
+//        getParentFragmentManager().setFragmentResultListener("key", getViewLifecycleOwner(), ((requestKey, result) -> {
+//            TaskmOdel taskmOdel = (TaskmOdel) result.getSerializable("keyModel");
+//            if (taskmOdel != null) {
+//                // adaptrer.addModel(taskmOdel, HomeFragment.this);
+//                 App.getInstance(requireContext()).getTaskDao().insert(taskmOdel);
+//            }
+//        }));
+
+    // это принимает редактированнную заметку
+//        getParentFragmentManager().setFragmentResultListener("editData", getViewLifecycleOwner(), ((requestKey, result) -> {
+//            TaskmOdel taskmOdel = (TaskmOdel) result.getSerializable("keyModel");
+//            if (taskmOdel != null) {
+//                adaptrer.editModel(taskmOdel);
+//                //  adaptrer.dataModel(taskmOdel);
+//
+//            }
+//        }));
 
     @Override
     public void onViewCreated(@NonNull @NotNull View
                                       view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         //   getDataFromDB();
     }
 
@@ -204,13 +209,12 @@ public class HomeFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("mod", taskmOdel);
                 bundle.putInt("position", position);
-                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.action_nav_home_to_formFragment, bundle);
             }
 
             @Override
             public void deleteClick(int position, TaskmOdel taskmOdel) {
-                ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
+                ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                     @Override
                     public boolean onMove(@NonNull @NotNull RecyclerView recyclerView, @NonNull @NotNull RecyclerView.ViewHolder viewHolder, @NonNull @NotNull RecyclerView.ViewHolder target) {
                         return false;
