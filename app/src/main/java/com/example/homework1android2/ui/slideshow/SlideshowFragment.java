@@ -47,7 +47,7 @@ public class SlideshowFragment extends Fragment {
             });
 
     private void sendImage() {
-        binding.fabs.setOnClickListener(new View.OnClickListener() {
+        binding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mGetContent.launch("image/*");
