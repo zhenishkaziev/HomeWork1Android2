@@ -15,14 +15,13 @@ import java.util.List;
 
 public class FireStoreAdapter extends RecyclerView.Adapter<FireStoreAdapter.ViewHolder> {
 
-    List <FireModel> list = new ArrayList<>();
+    List<FireModel> list = new ArrayList<>();
 
-     public void addMessage(List<FireModel> models) {
-         this.list = models;
-         list.add((FireModel) models);
-         notifyDataSetChanged();
-     }
 
+    public void addListOfModel (List <FireModel> models){
+        list.addAll(models);
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @NotNull
@@ -34,21 +33,25 @@ public class FireStoreAdapter extends RecyclerView.Adapter<FireStoreAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-               holder.txtFireText.setText(list.get(position).getMessage());
+        holder.bind(list.get(position));
+
     }
 
     @Override
     public int getItemCount() {
-        return  list.size();
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtFireText;
-
+        TextView txtText;
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            txtFireText = itemView.findViewById(R.id.item_fire_text);
+            txtText = itemView.findViewById(R.id.item_fire_text);
+        }
+
+        public void bind(FireModel fireModel) {
+                txtText.setText(fireModel.getText());
         }
     }
 }

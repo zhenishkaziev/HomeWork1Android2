@@ -45,17 +45,7 @@ public class FormFragment extends Fragment {
         getInform();
         initButton();
         checkRadio();
-        fireClick();
         return view;
-    }
-
-    private void fireClick() {
-        btnByNext.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.fireStore);
-        });
-
-
     }
 
     //  мы принимаем даннные с HomerF и иниц наши данные и принимает данные по позиции и меняем isEdit на true
@@ -199,7 +189,6 @@ public class FormFragment extends Fragment {
         radioBlack = view.findViewById(R.id.radio_black);
         radioWhite = view.findViewById(R.id.radio_white);
         radioRed = view.findViewById(R.id.radio_red);
-        btnByNext = view.findViewById(R.id.fire_button);
 //        aSwitch = view.findViewById(R.id.switch_black);
     }
 

@@ -96,7 +96,7 @@ public class AuthFragment extends Fragment {
 
                         FirebaseUser user = task.getResult().getUser();
                         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-//                        navController.navigate();
+                        navController.navigate(R.id.nav_home);
                         // Update UI
                     } else {
                         // Sign in failed, display a message and update the UI

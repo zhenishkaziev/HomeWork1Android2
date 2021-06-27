@@ -1,18 +1,18 @@
 package com.example.homework1android2;
 
 public class FireModel {
-    public FireModel(String message) {
-        this.message = message;
+
+    public String getText() {
+        return text;
     }
 
-    public String getMessage() {
-        return message;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public FireModel(String text) {
+        this.text = text;
     }
 
-    String message;
-
+    String text;
 }

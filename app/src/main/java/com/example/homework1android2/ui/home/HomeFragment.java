@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -209,6 +210,7 @@ public class HomeFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("mod", taskmOdel);
                 bundle.putInt("position", position);
+                navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.action_nav_home_to_formFragment, bundle);
             }
 

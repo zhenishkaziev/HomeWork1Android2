@@ -25,6 +25,7 @@ public class TaskAdaptrer extends RecyclerView.Adapter<TaskAdaptrer.ViewHolder> 
   public OnItemClick onItemClick;
   public List<TaskmOdel> list = new ArrayList<>();
 //    public List<TaskmOdel> listModel = new ArrayList<>();
+    
 
 
     public void setOnItemClick

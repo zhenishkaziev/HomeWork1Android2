@@ -79,17 +79,21 @@ public class MainActivity extends AppCompatActivity {
                     binding.appBarMain.toolbar.setVisibility(View.GONE);
                     binding.appBarMain.fab.setVisibility(View.GONE);
                 }
-                if (destination.getId() == R.id.fireStore) {
-                    binding.appBarMain.fab.setVisibility(View.GONE);
-                    binding.appBarMain.toolbar.setVisibility(View.GONE);
-                }
+                 if (destination.getId() == R.id.nav_gallery){
+                     binding.appBarMain.toolbar.setVisibility(View.GONE);
+                     binding.appBarMain.fab.setVisibility(View.GONE);
+                 }
+                  if (destination.getId() == R.id.nav_slideshow){
+                      binding.appBarMain.toolbar.setVisibility(View.GONE);
+                      binding.appBarMain.fab.setVisibility(View.GONE);
+                  }
             }
 
         });
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             navController.navigate(R.id.authFragment);
-//            finish();
+     //        finish();
         }
         addImage();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
